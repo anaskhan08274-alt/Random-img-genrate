@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 40px;
+            background-color: black;
+            color: white;
+            
+        }
+        
+        button{
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            position: fixed;
+            margin-left: -80px;
+        }
+        h1{
+            position: fixed;
+            margin-top: -50px;
+            margin-left: 450px;
+        }
+        button:hover {
+            background-color: red;
+            border-radius: 20px;
+            font-size: large;
+            
+        }
+        #image-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 20px;
+            margin-top: 90px;
+        }
+        .image-item img{
+            width:100%;
+            border-radius: 8px;
+            height: auto;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+     
+    <h1>Search Unsplash Images</h1>
+    <button onclick="searchImage()">Get Random Image</button>
+ 
+      <div id="image-container"></div>
+
+</body>
+
+<script>
+    const accessKey = 'OVWPGsdeUyURkellzpWTeY97VqK4nWCATerNk3FNRT4'
+    
+    async function searchImage() {
+        
+        const imagecontainer = document.getElementById('image-container')
+        imagecontainer.innerHTML=''
+
+
+
+        try {
+            const response = await fetch(`https://api.unsplash.com/photos/random?client_id=${accessKey}&count=12`)
+            const data = await response.json()
+
+            
+                data.forEach(photo => {    
+                const img = document.createElement('img')
+                img.src = photo.urls.regular
+                img.alt = photo.alt_description || 'Unsplash Image'
+
+                const div = document.createElement('div')
+                div.className = 'image-item'
+                div.appendChild(img)
+
+                imagecontainer.appendChild(div)
+            })
+        }
+ catch(error){
+    console.error('Error fetching images:',error);
+    alert("something went wrong.Try again.");
+}
+}
+
+</script>
+</html>         
+
